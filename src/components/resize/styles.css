@@ -1,0 +1,7 @@
+.resize {
+  min-width: 1px;
+  z-index: 1;
+cursor: ew-resize;
+  padding-inline: 5px;
+  margin-inline: -5px;
+}

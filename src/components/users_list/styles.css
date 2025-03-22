@@ -1,0 +1,35 @@
+.user_list  {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  gap: 5px;
+
+  width: 25vw;
+  height: 100vh;
+  padding-top: 10px;
+
+  border-right: 1px solid gray;
+  overflow-y: scroll;
+}
+.user_item  {
+  display: flex;
+
+  gap: 5px;
+  align-items: center;
+
+  padding-inline: 20px;
+  cursor: pointer;
+
+  user-select:none ;
+
+ &> img {
+  width: 15px;
+  height: 15px;
+ }
+
+ &:hover {
+  background-color: #C7EDFC;
+}
+
+
+}
