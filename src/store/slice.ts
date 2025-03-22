@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { generateUsers } from "./features/mock";
 import { User } from "../types";
 
@@ -18,8 +18,19 @@ const usersSlice = createSlice({
       const fetched = generateUsers(20);
       state.list = state.list.concat(fetched);
     },
+
+    updateUserByIndex: (
+      state,
+      action: PayloadAction<{ index: number; user: User }>
+    ) => {
+      const { index, user } = action.payload;
+      if (index >= 0 && index < state.list.length) {
+        state.list[index] = user;
+      }
+    },
   },
 });
 
-export const { fetchUsers } = usersSlice.actions;
+export const { fetchUsers, updateUserByIndex } = usersSlice.actions;
+
 export default usersSlice.reducer;

@@ -7,10 +7,12 @@
   width: 25vw;
   height: 100vh;
   padding-top: 10px;
+  padding-left: 0;
 
   border-right: 1px solid gray;
   overflow-y: scroll;
 }
+
 .user_item  {
   display: flex;
 

@@ -1,9 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { User } from "../../types";
-
 import "./styles.css";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import { fetchUsers } from "../../store/slice";
 
 interface Props {
@@ -13,12 +12,15 @@ interface Props {
 export const UsersList = ({ set }: Props) => {
   const users = useSelector((state: RootState) => state.users.list);
   const dispatch = useDispatch();
+  const lastElementRef = useRef<HTMLLIElement | null>(null);
 
   const observerCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const [entry] = entries;
       if (entry.isIntersecting) {
-        dispatch(fetchUsers());
+        setTimeout(() => {
+          dispatch(fetchUsers());
+        }, 500);
       }
     },
     [dispatch]
@@ -28,22 +30,27 @@ export const UsersList = ({ set }: Props) => {
     const observer = new IntersectionObserver(observerCallback, {
       root: null,
       rootMargin: "0px",
-      threshold: 1.0,
+      threshold: 0.5,
     });
-    const element = document.getElementById("last");
-    if (element) observer.observe(element);
+
+    const currentLastElement = lastElementRef.current;
+    if (currentLastElement) {
+      observer.observe(currentLastElement);
+    }
 
     return () => {
-      if (element) observer.unobserve(element);
+      if (currentLastElement) {
+        observer.unobserve(currentLastElement);
+      }
     };
   }, [observerCallback, users]);
 
   return (
-    <div className="user_list">
+    <ul className="user_list">
       {users.map((item: User, index) => (
-        <div
+        <li
           className="user_item"
-          id={index === users.length - 1 ? "last" : ""}
+          ref={index === users.length - 1 ? lastElementRef : null}
           key={index}
           onClick={() => {
             console.log(index);
@@ -52,8 +59,8 @@ export const UsersList = ({ set }: Props) => {
         >
           <img src="/img/user.svg" alt="user" />
           <div>{item.name}</div>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
